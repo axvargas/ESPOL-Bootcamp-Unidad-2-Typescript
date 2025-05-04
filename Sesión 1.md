@@ -49,7 +49,7 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
 
 ---
 #### 👎 Restaurante de Hamburguesas:
- 1. Empecemos con un menú de hamburguesas `menu`, una variable para guardar el dinero en la caja registradora `cashInRegistry` (siempre va a empezar con $100) y una variable para registrar las ordenes en curso `orderQueue`
+ 1. Empecemos con un menú de hamburguesas `menu`, una variable para guardar el dinero en la caja registradora `cashInRegistry` (siempre va a empezar con $100) y una variable para registrar las ordenes en curso `orderQueue`.
    ```js
      menu = [
         { name: 'Supreme', price: 10},
