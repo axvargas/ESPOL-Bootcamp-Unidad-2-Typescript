@@ -62,9 +62,18 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
       
       cashInRegistry = 100;
       orderQueue = [];
-      
-      /* Crea una función llamada addNewPizza que reciba un objeto de tipo hamburguesa y la añada al menú */
    ```
- 2. 
- 3. 
+ 2. CHALLENGE: Crea una función llamada `addNewHamburguer` que reciba un objeto de tipo hamburguesa y la añada al menú
+ 3. CHALLENGE: Crea una función llamada `placeOrder` que reciba el nombre de una hamburguesa como parámetro:
+    - Buscar el objeto de hamburguesa en el menú
+    - Agregar un nuevo objeto de tipo orden a la lista de   `orderQueue`. Ej: `{'hamburguer': ObjetodeHamburguesa, status: 'ordered'}`
+    - Retornar el nuevo objeto de orden
+4. CHALLENGE: Desafío: escribe otra función llamada `completeOrder` que reciba un `orderId` como parámetro,
+   busque la orden correspondiente en la cola de órdenes (`orderQueue`), y marque su estado como "completed".
+   Para mayor utilidad, retorna la orden encontrada desde la función.
+
+   Nota: debes asegurarte de que estemos agregando IDs a nuestras órdenes cuando se crean nuevas órdenes.
+   Puedes usar una variable global llamada `nextOrderId` e incrementarla cada vez que se cree una nueva orden
+   para simular cómo una base de datos nos asignaría IDs reales.
+5. 
 
