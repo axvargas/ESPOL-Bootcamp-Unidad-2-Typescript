@@ -44,3 +44,27 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
 > **TypeScript no reemplaza a JavaScript**, lo mejora.
 >  
 > Es como tener un amigo que te corrige antes de que el profesor vea tu tarea ✏️
+
+
+
+---
+#### 👎 Restaurante de Hamburguesas:
+ 1. Empecemos con un menú de hamburguesas `menu`, una variable para guardar el dinero en la caja registradora `cashInRegistry` (siempre va a empezar con $100) y una variable para registrar las ordenes en curso `orderQueue`
+   ```js
+     menu = [
+        { name: 'Supreme', price: 10},
+        { name: 'Deluxe', price: 12},
+        { name: '1/4 pound with cheese', price: 13},
+        { name: 'Classic', price: 14},
+        { name: 'Extreme', price: 14},
+        { name: 'Salty Crunch', price: 9}
+      ]
+      
+      cashInRegistry = 100;
+      orderQueue = [];
+      
+      /* Crea una función llamada addNewPizza que reciba un objeto de tipo hamburguesa y la añada al menú */
+   ```
+ 2. 
+ 3. 
+
