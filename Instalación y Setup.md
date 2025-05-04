@@ -67,17 +67,16 @@ Puedes buscar estas extensiones dentro de VSCode:
 ### ✅ 5. Crear tu primer proyecto TypeScript
 
 1. Abre VSCode
-2. Abre la terminal integrada (`Ctrl + ~` o `Cmd + ~`)
+2. Abre la terminal integrada
 3. Ejecuta:
 
 ```bash
 mkdir mi-proyecto-ts
 cd mi-proyecto-ts
 tsc --init  # Crea tsconfig.json
-touch index.ts  # En Mac (usa `type nul > index.ts` en Windows)
 ```
 
-4. Escribe algo en `index.ts`:
+4. Crea un archivo y Escribe algo en `index.ts`:
 
 ```ts
 const saludo: string = "Hola TypeScript";
