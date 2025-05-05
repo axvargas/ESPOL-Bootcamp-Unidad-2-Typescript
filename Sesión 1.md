@@ -1,53 +1,3 @@
-### 🧠 ¿Por qué usar **TypeScript** en lugar de solo **JavaScript**?
-
-Aunque JavaScript funciona bien y lo usamos todo el tiempo, tiene un problema: **no nos avisa cuando cometemos errores hasta que el programa ya está corriendo**.
-
-#### 👎 JavaScript:
-```js
-let edad = "25";
-console.log(edad * 2); // Resultado: 50 😨 ¿por qué? era un string
-```
-
-#### 👍 TypeScript:
-```ts
-let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
-```
-
----
-
-### 🚀 Ventajas de TypeScript
-
-1. ✅ **Detecta errores antes de ejecutar**
-   - Te avisa mientras escribes el código.
-   - Reduce bugs en producción.
-
-2. 🧩 **Mejor experiencia en el editor (VSCode)**
-   - Autocompletado inteligente.
-   - Documentación de funciones y objetos al instante.
-   - Recomendaciones y refactorización más fácil.
-
-3. 🧼 **El código es más claro**
-   - Si ves `nombre: string`, sabes lo que se espera.
-   - Ayuda a otros (o a ti mismo en el futuro) a entender tu código más rápido.
-
-4. 🛡️ **Es más seguro**
-   - Obliga a pensar qué tipo de datos manejamos.
-   - Evita errores típicos de pasar datos incorrectos entre funciones.
-   - Promueve el **Código defensivo**
-     
-5. 🧠 **Preparación para proyectos reales**
-   - La mayoría de aplicaciones React en empresas usan TypeScript.
-   - Cada vez más equipos lo exigen por productividad y mantenimiento.
-
----
-
-### 🎯 En resumen:
-> **TypeScript no reemplaza a JavaScript**, lo mejora.
->  
-> Es como tener un amigo que te corrige antes de que el profesor vea tu tarea ✏️
-
-
-
 ---
 ### Restaurante de Hamburguesas:
 #### Creando una aplicación de consola con Javascript:
@@ -76,7 +26,7 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
     Para mayor utilidad, retorna la orden encontrada desde la función.
 
     Nota: debes asegurarte de que estemos agregando IDs a nuestras órdenes cuando se crean nuevas órdenes.
-    Puedes usar una variable llamada `nextOrderId` e incrementarla cada vez que se cree una nueva orden
+    Puedes usar una variable llamada `const nextOrderId` e incrementarla cada vez que se cree una nueva orden
     para simular cómo una base de datos nos asignaría IDs reales.
  5. Llama a las funciones previamente creadas:
      ```js
@@ -85,7 +35,7 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
      addNewHamburguer({ name: "Spicy Sausage", cost: 11 })
       
      placeOrder("Supreme")
-     completeOrder(1)
+     completeOrder('1')
       
      console.log("Menu:", menu)
      console.log("Cash in register:", cashInRegister)
@@ -93,4 +43,12 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
      ```
 #### Moviendo el código a Typescript:
 Podemos observar que el que el editor de código nos muestra varios errores
+1. Uno de los errores más evidentes es el que se tiene con ```nextOrderId++```, que indica que no se puede asignar otro valor a una variable declarada con ```const```
+2. Typescript te obliga a siempre manejar un código defensivo, por ejemplo en ```selectedHamburguer.price``` se muestra que ```selectedHamburguer``` puede ser undefined, lo que provocaría un error, ya que no puedes acceder a una propiedad de una ```undefined```
 
+#### Migrando de Javascript a Typescript:
+1. CHALLENGE: Enséñale a TypeScript qué tipo de dato debe usarse para el `orderId` en la función `completeOrder`. Luego revisa si TypeScript muestra advertencias adicionales y corrígelas.
+2. CHALLENGE: Crea un tipo de objeto de Hamburguesa. Debe incluir las propiedades `name` y `price`.
+3. CHALLENGE: indícale a TypeScript que ```hamburguerObj``` debe ser del tipo ```Hamburguer```. Luego, revisa el código para ver si aparecen nuevas advertencias de TypeScript y corrige esos problemas.
+4. CHALLENGE: Enséñale a TypeScript qué tipo de dato debe usarse para el `hamburguerName` en la función `placeOrder`. Luego revisa si TypeScript muestra advertencias adicionales y corrígelas.
+5. CHALLENGE: Agrega un tipo `Order`. Debe tener las propiedades `id`, `hamburguer` y `status`. Revisa el código si necesitas un recordatorio sobre qué tipos de datos deberían tener esas propiedades.
