@@ -59,24 +59,61 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
 ---
 
 ## **Objetos en TypeScript**
-### **Definir tipos para objetos**
 ```typescript
-let user: { name: string; age: number } = {
-  name: "María",
-  age: 25
-};
-
-console.log(`El usuario ${user.name} tiene ${user.age} años.`);
-```
-
-### **Con interfaces**
-- Las interfaces permiten definir estructuras reutilizables para objetos.
-```typescript
-interface User {
-  name: string;
-  age: number;
+type Person = {
+    name: string
+    age: number
+    isStudent: boolean
 }
 
-let user: User = { name: "Pedro", age: 40 };
-console.log(`El usuario ${user.name} tiene ${user.age} años.`);
+let person1: Person = {
+    name: "Joe",
+    age: 42,
+    isStudent: true
+}
+
+let person2: Person = {
+    name: "Jill",
+    age: 66,
+    isstudent: false
+} 
 ```
+---
+## **Objetos Anidados en TypeScript**
+```ts
+type Address = {
+    street: string
+    city: string
+    country: string
+}
+
+type Person = {
+    name: string
+    age: number
+    isStudent: boolean
+    address: Address
+}
+
+let person1: Person = {
+    name: "Joe",
+    age: 42,
+    isStudent: true,
+    address: {
+        street: "123 Main",
+        city: "Anytown", 
+        country: "USA"
+    }
+}
+
+let person2: Person = {
+    name: "Jill",
+    age: 66,
+    isStudent: false,
+    address: {
+        street: "123 Main",
+        city: "Anytown",
+        country: "USA"
+    }
+}
+```
+
