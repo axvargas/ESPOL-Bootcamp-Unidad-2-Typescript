@@ -47,6 +47,65 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
 > Es como tener un amigo que te corrige antes de que el profesor vea tu tarea ✏️
 ---
 
+### 🧠 ¿Qué es código defensivo?
+
+El **código defensivo** es una forma de programar **anticipándote a los errores**. En vez de asumir que todo va a salir bien (el _happy path_), también escribes tu código preparado para cuando algo salga mal (el _sad path_).
+
+---
+
+### ✅ **Happy Path** (camino feliz)
+
+Es el flujo en el que **todo funciona como se espera**.  
+En tu función:
+
+```ts
+const selectedHamburguer = menu.find(hamburguerObj => hamburguerObj.name === hamburguerName)
+```
+
+Si el nombre existe en el menú, todo sale bien:
+
+- Se encuentra la hamburguesa
+- Se suma el precio al total
+- Se crea y retorna la orden
+
+---
+
+### ❌ **Sad Path** (camino triste o de error)
+
+Es lo que pasa cuando **algo sale mal o inesperado**.
+
+Tu código defensivo está aquí:
+
+```ts
+if (!selectedHamburguer) {
+  console.error(`${hamburguerName} does not exist in the menu`)
+  return
+}
+```
+
+👉 Esto es código defensivo:  
+- Compruebas que la hamburguesa exista antes de intentar usarla.  
+- Evitas errores como `selectedHamburguer.price` siendo `undefined`.
+
+---
+
+### 🧪 ¿Qué pasaría sin ese chequeo?
+
+```ts
+cashInRegister += selectedHamburguer.price // ❌ Error si es undefined
+```
+
+Te lanzarías directamente al _happy path_ sin asegurarte que todo esté listo, lo cual puede romper tu aplicación.
+
+---
+
+### 🛡️ En resumen:
+
+- El **happy path** es el camino ideal.  
+- El **sad path** es lo que pasa cuando algo falla.  
+- El **código defensivo** es anticiparte a los errores y **proteger tu aplicación** con condiciones como `if (!selectedHamburguer)`.
+  
+---
 ## **Tipos básicos en TypeScript**
 | **Tipo**       | **Ejemplo**                   |
 |-----------------|-------------------------------|
