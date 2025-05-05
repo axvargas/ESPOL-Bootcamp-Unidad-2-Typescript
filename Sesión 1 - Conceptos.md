@@ -57,3 +57,26 @@ let edad: number = "25"; // ❌ Error: el string no se puede asignar a un number
 | **array**       | `let numbers: number[] = [1, 2, 3];` |
 
 ---
+
+## **Objetos en TypeScript**
+### **Definir tipos para objetos**
+```typescript
+let user: { name: string; age: number } = {
+  name: "María",
+  age: 25
+};
+
+console.log(`El usuario ${user.name} tiene ${user.age} años.`);
+```
+
+### **Con interfaces**
+- Las interfaces permiten definir estructuras reutilizables para objetos.
+```typescript
+interface User {
+  name: string;
+  age: number;
+}
+
+let user: User = { name: "Pedro", age: 40 };
+console.log(`El usuario ${user.name} tiene ${user.age} años.`);
+```
