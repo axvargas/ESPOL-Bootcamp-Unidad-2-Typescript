@@ -45,6 +45,20 @@
 Podemos observar que el que el editor de código nos muestra varios errores
 1. Uno de los errores más evidentes es el que se tiene con ```nextOrderId++```, que indica que no se puede asignar otro valor a una variable declarada con ```const```
 2. Typescript te obliga a siempre manejar un código defensivo, por ejemplo en ```selectedHamburguer.price``` se muestra que ```selectedHamburguer``` puede ser undefined, lo que provocaría un error, ya que no puedes acceder a una propiedad de una ```undefined```
+   Por esa razón vamos a validar si exise o no
+   ````ts
+   function placeOrder(hamburguerName: string) {
+     const selectedHamburguer = menu.find(hamburguerObj => hamburguerObj.name === hamburguerName)
+     if (!selectedHamburguer) {
+       console.error(`${hamburguerName} does not exist in the menu`)
+       return
+     }
+     cashInRegister += selectedHamburguer.price
+     const newOrder = { id: nextOrderId++, hamburguer: selectedHamburguer, status: "ordered" }
+     orderQueue.push(newOrder)
+     return newOrder
+   }
+   ```
 
 #### Migrando de Javascript a Typescript:
 1. CHALLENGE: Enséñale a TypeScript qué tipo de dato debe usarse para el `orderId` en la función `completeOrder`. Luego revisa si TypeScript muestra advertencias adicionales y corrígelas.
@@ -52,3 +66,4 @@ Podemos observar que el que el editor de código nos muestra varios errores
 3. CHALLENGE: indícale a TypeScript que ```hamburguerObj``` debe ser del tipo ```Hamburguer```. Luego, revisa el código para ver si aparecen nuevas advertencias de TypeScript y corrige esos problemas.
 4. CHALLENGE: Enséñale a TypeScript qué tipo de dato debe usarse para el `hamburguerName` en la función `placeOrder`. Luego revisa si TypeScript muestra advertencias adicionales y corrígelas.
 5. CHALLENGE: Agrega un tipo `Order`. Debe tener las propiedades `id`, `hamburguer` y `status`. Revisa el código si necesitas un recordatorio sobre qué tipos de datos deberían tener esas propiedades.
+6. CHALLENGE: Arregla el warning que arroja typescript en la función `completeOrder`, usando código defensivo.
