@@ -48,3 +48,5 @@ de la función asegurándote de que TypeScript entienda que identifier
 puede ser una cadena o un número.
 5. CHALLENGE: Escribe el código para comprobar si el parámetro es una cadena (string)
 o un número (number), y usa el método menu.filter() de acuerdo a eso.
+6. CHALLENGE: Agrega los return types de las funciones y arregla posibles errores
+
