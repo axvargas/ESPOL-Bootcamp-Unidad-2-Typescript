@@ -189,8 +189,8 @@ No asumes que siempre se va a encontrar un resultado. Dejas claro qué pasa en c
 
 ### 🧪 En resumen:
 
-**Ser explícito** es decirle a TypeScript (y a otros desarrolladores)  
-qué tipo de datos estás esperando, y qué hacer en cada situación.  
+> **Ser explícito** es decirle a TypeScript (y a otros desarrolladores)  
+> qué tipo de datos estás esperando, y qué hacer en cada situación.  
 ---
 
 ## 🔁 ¿Qué son los **Return Types** en funciones?
