@@ -191,6 +191,91 @@ No asumes que siempre se va a encontrar un resultado. Dejas claro qué pasa en c
 
 **Ser explícito** es decirle a TypeScript (y a otros desarrolladores)  
 qué tipo de datos estás esperando, y qué hacer en cada situación.  
-Tu función `getHamburguerDetail` es un excelente ejemplo de eso.
+---
+
+## 🔁 ¿Qué son los **Return Types** en funciones?
+
+En TypeScript, un **return type** es el **tipo de dato** que una función va a devolver (return).  
+Es como decir:  
+> “Esta función **promete devolver** un número, una cadena, un objeto, o nada.”
+
+
+### 🎯 Ejemplo básico:
+
+```ts
+function sumar(a: number, b: number): number {
+  return a + b;
+}
+```
+
+- Los parámetros `a` y `b` son de tipo `number`.
+- El `: number` después del paréntesis indica que la función **devuelve un número**.
+- Si devolviera un string, TypeScript lanzaría un error.
+
+
+### ❓ ¿Por qué usar return types?
+
+- Te ayuda a **garantizar que la función devuelve lo que debe**.
+- Hace tu código **más fácil de leer y mantener**.
+- Previene errores donde devuelves algo incorrecto por accidente.
+
+---
+
+### ✅ Puedes dejar que TypeScript lo infiera...
+
+```ts
+function saludar(nombre: string) {
+  return `Hola, ${nombre}`;
+}
+```
+
+Aquí TypeScript **deduce automáticamente** que el tipo de retorno es `string`.
+
+
+### 🛑 ...pero es mejor ser explícito cuando:
+
+- La función es larga o compleja.
+- El tipo de retorno no es obvio.
+- Estás trabajando en equipo.
+- Quieres evitar bugs o tener más control.
+
+```ts
+function obtenerEdad(nombre: string): number {
+  if (nombre === "Juan") return 30;
+  return 0;
+}
+```
+
+
+### 🔇 ¿Y si la función no devuelve nada?
+
+Usamos el tipo `void`:
+
+```ts
+function mostrarMensaje(msg: string): void {
+  console.log(msg);
+}
+```
+
+Esto le dice a TypeScript:  
+> “Esta función no devuelve nada”.
+
+
+### 🔄 Funciones que pueden devolver más de un tipo (¡Uniones!)
+
+```ts
+function buscar(id: number): string | null {
+  if (id === 1) return "Elemento encontrado";
+  return null;
+}
+```
+
+Aquí estás diciendo: “esta función puede devolver un `string` **o** `null`”.
+
+### 🧪 Resumen:
+
+- Los **tipos de retorno** declaran **qué va a devolver una función**.
+- Te ayudan a prevenir errores y a documentar mejor tu código.
+- Puedes usar `number`, `string`, `boolean`, `void`, objetos, arrays o incluso tipos personalizados.
 
 ---
