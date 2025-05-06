@@ -67,3 +67,18 @@ Podemos observar que el que el editor de código nos muestra varios errores
 4. CHALLENGE: Enséñale a TypeScript qué tipo de dato debe usarse para el `hamburguerName` en la función `placeOrder`. Luego revisa si TypeScript muestra advertencias adicionales y corrígelas.
 5. CHALLENGE: Agrega un tipo `Order`. Debe tener las propiedades `id`, `hamburguer` y `status`. Revisa el código si necesitas un recordatorio sobre qué tipos de datos deberían tener esas propiedades.
 6. CHALLENGE: Arregla el warning que arroja typescript en la función `completeOrder`, usando código defensivo.
+7. Notarás que al ejecutar `tsc hamburguerRestaurant.ts` sale un error. Eso se debe a que a ts no acepta la función `.find()` ya que este puede devolver un undefined, por lo que lo correcto sería usar `.filter` que devuelve un arreglo vacío en caso de que no exista ningún elemento que cumpla la condición
+```ts
+function placeOrder(hamburguerName: string) {
+  const selectedHamburguerArray = menu.filter(hamburguerObj => hamburguerObj.name === hamburguerName)
+  const selectedHamburguer: Hamburguer = selectedHamburguerArray[0];
+  if (!selectedHamburguer) {
+    console.error(`${hamburguerName} does not exist in the menu`)
+    return
+  }
+  cashInRegister += selectedHamburguer.price
+  const newOrder: Order = { id: nextOrderId++, hamburguer: selectedHamburguer, status: "ordered" }
+  orderQueue.push(newOrder)
+  return newOrder
+}
+```
