@@ -40,11 +40,11 @@ solo pueda ser "ordered" o "completed".
    addNewHamburguer({ id: 8, name: "BBQ Deluxe", price: 12 })
    addNewHamburguer({ id: 9, name: "Spicy Sausage", price: 11 })
    ```
-4. CHALLENGE: crea una nueva función utilitaria llamada `getHamburguerDetail`. Esta recibirá
+4. CHALLENGE: Crea una nueva función utilitaria llamada `getHamburguerDetail`. Esta recibirá
 un parámetro llamado identifier, pero queremos que ese parámetro
 pueda ser el nombre de la hamburguesa como cadena (por ejemplo, "Supreme"),
-o el ID como número (por ejemplo, 1).
-
-No te preocupes todavía por el contenido de la función, solo crea la firma
+o el ID como número (por ejemplo, 1). No te preocupes todavía por el contenido de la función, solo crea la firma
 de la función asegurándote de que TypeScript entienda que identifier
 puede ser una cadena o un número.
+5. CHALLENGE: Escribe el código para comprobar si el parámetro es una cadena (string)
+o un número (number), y usa el método menu.filter() de acuerdo a eso.
