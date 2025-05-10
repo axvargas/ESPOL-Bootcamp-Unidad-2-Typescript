@@ -1,4 +1,4 @@
-## 🎬 Paso 1: Inicializar un proyecto de TypeScript
+## 🎬 Pasos para inicializar un proyecto de TypeScript
 
 Sí, **lo primero** que debes hacer es inicializar tu proyecto con:
 
