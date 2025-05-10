@@ -27,8 +27,10 @@ Requisitos del producto:
 * inStock: boolean
 * category: enum con "toys", "books", "electronics"
 
-> 🎯 **Bonus**: crea el tipo `Product` usando `z.infer`. (+1 pt)
+🎯 **Bonus**: crea el tipo `Product` usando `z.infer`. (+1 pt)
+
 ---
+
 
 ### 🧩 2. Crea `validateProductData` (2 pts)
 
