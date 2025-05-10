@@ -349,7 +349,7 @@ export type CreateUser = z.infer<typeof createUserSchema>
 ### Crear `UpdateUser` (todos los campos opcionales):
 
 ```ts
-export const updateUserSchema = createUserSchema.partial()
+export const updateUserSchema = createUserSchema.partial().omit({ id: true })
 export type UpdateUser = z.infer<typeof updateUserSchema>
 ```
 
