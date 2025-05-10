@@ -1,6 +1,21 @@
 # Taller 1: Zod y Módulos
 ---
 
+Para desarrollar este taller, crea una carpeta nueva, e inicializa un proyecto de node. Sigue los siguientes pasos:
+1. Incializa un proyecto de node
+    ```bash
+    npm init -y
+    ```
+2. Instala Typescript
+    ```bash
+    npm install --save-dev typescript
+    ```
+3. Genera el archivo de configuración con:
+    ```bash
+    npx tsc --init
+    ```
+
+
 ### 🧩 1. Crea un esquema para `Product` (2 pts)
 
 Requisitos del producto:
