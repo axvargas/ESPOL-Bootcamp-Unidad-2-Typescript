@@ -71,5 +71,3 @@ node tuArchivo.js
 ```
 
 ---
-
-
