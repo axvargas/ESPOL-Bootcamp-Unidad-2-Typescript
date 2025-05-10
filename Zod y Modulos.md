@@ -7,6 +7,7 @@ npm init -y
 ```
 
 Esto crea un archivo llamado `package.json`, que guarda la información de tu proyecto: nombre, dependencias, scripts, etc.
+
 ---
 
 ### 📦 Paso 2: Instalar TypeScript como dependencia de desarrollo
