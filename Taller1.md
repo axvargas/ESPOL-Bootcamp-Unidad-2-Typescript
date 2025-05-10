@@ -62,3 +62,6 @@ index.ts
 ---
 
 Finalmente para poder comprimir la carpeta y subir el archivo comprimido en aula virtual debes borrar la carpeta llamada `node_modules`, luego comprimir toda la carpeta y subir el archivo en la sección del taller
+
+Para volver a instaler node_modules, tienen que ejecutar:
+`npm i` en la terminal
