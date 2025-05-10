@@ -1,3 +1,68 @@
+## 🎬 Paso 1: Inicializar un proyecto de TypeScript
+
+Sí, **lo primero** que debes hacer es inicializar tu proyecto con:
+
+```bash
+npm init -y
+```
+
+Esto crea un archivo llamado `package.json`, que guarda la información de tu proyecto: nombre, dependencias, scripts, etc.
+---
+
+### 📦 Paso 2: Instalar TypeScript como dependencia de desarrollo
+
+Debes instalar TypeScript como una **dependencia de desarrollo**, no como una dependencia de producción.
+
+Lo correcto es:
+
+```bash
+npm install --save-dev typescript
+```
+
+Esto se hace porque TypeScript **no es parte de tu aplicación final**, solo lo usas mientras desarrollas, para compilar tu código a JavaScript. Luego, lo que corre realmente es el JavaScript compilado, no el TypeScript.
+
+---
+
+### 🤓 ¿Qué diferencia hay entre `--save-dev` y `--save`?
+
+| Comando         | ¿Para qué sirve?                                                                        |
+| --------------- | --------------------------------------------------------------------------------------- |
+| `--save` o nada | Instala algo que **tu app necesita para funcionar** en producción. Ej: React, Zod, etc. |
+| `--save-dev`    | Instala algo que solo usas mientras **desarrollas**. Ej: TypeScript, ESLint, etc.       |
+
+---
+
+### 📘 Paso 3: Crear archivo de configuración
+
+Después de instalar TypeScript, puedes crear un archivo de configuración con:
+
+```bash
+npx tsc --init
+```
+
+Esto genera un archivo `tsconfig.json`, donde puedes configurar cosas como:
+
+* La carpeta donde guardar los archivos `.js` generados
+* Qué versiones de JavaScript usar
+* Qué reglas aplicar, etc.
+
+---
+
+### ✅ Resumen Final
+
+1. Sí, debes usar `npm init -y` al comenzar.
+2. Instala TypeScript con:
+
+   ```bash
+   npm install --save-dev typescript
+   ```
+3. Genera el archivo de configuración con:
+
+   ```bash
+   npx tsc --init
+   ```
+---
+
 ## 🧠 ¿Qué es Zod?
 
 Zod es una **librería de validación de datos**. Nos ayuda a asegurarnos de que los datos que estamos usando tienen la **forma y el tipo correcto**. Si alguien pone un número donde debería ir un texto, Zod lo detecta.
