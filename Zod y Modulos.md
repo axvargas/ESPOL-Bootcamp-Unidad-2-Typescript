@@ -362,6 +362,15 @@ Tenemos una lista que simula una base de datos:
 ```ts
 let users: User[] = []
 
+function validateUserData(data: unknown): CreateUser | undefined {
+  const result = createUserSchema.safeParse(data)
+  if (!result.success) {
+    console.error("Datos inválidos:", result.error.format())
+    return
+  }
+  return result.data
+}
+
 function createUser(data: CreateUser): User {
   const newUser = { ...data, id: uuidv4() }
   users.push(newUser)
@@ -376,6 +385,23 @@ function updateUser(id: string, updates: UpdateUser): User | undefined {
   users = users.map(u => u.id === id ? updatedUser : u)
   return updatedUser
 }
+
+const user = validateUserData({
+  name: "Ana",
+  age: 28,
+  email: "ana@example.com",
+  status: "active",
+})
+
+let newUser
+if(user){
+  newUser = createUser(user)
+  console.log("Usuario creado:", newUser)
+} else {
+  console.error('The user data is not valid')
+  throw new Error("The user data is not valid");
+}
+
 ```
 ---
 
