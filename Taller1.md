@@ -14,6 +14,7 @@ Para desarrollar este taller, crea una carpeta nueva, e inicializa un proyecto d
     ```bash
     npx tsc --init
     ```
+4. En la raíz del proyecto crea un archivo llamada `index.ts` para que puedas dessarollar los pasos del taller.
 
 
 ### 🧩 1. Crea un esquema para `Product` (2 pts)
