@@ -63,6 +63,7 @@ Esto genera un archivo `tsconfig.json`, donde puedes configurar cosas como:
    npx tsc --init
    ```
 ---
+Dentro de este archivo lo mejor siempre es descomentar la linea quie dice `outDir` y agregarle como valor `"dist"` para que todos nuestros archivos compilados se guarden en esa carpeta
 
 ## 🧠 ¿Qué es Zod?
 
