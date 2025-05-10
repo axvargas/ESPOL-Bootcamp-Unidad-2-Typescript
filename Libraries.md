@@ -18,7 +18,8 @@ Esto creará un archivo `package.json`, que es necesario para instalar cualquier
 ## 🧩 Paso 2: Instalar TypeScript y uuid
 
 ```bash
-npm install --save-dev typescript uuid
+npm install --save-dev typescript
+npm install uuid
 ```
 
 Y luego instala los tipos de uuid para que TypeScript entienda cómo usarlo:
