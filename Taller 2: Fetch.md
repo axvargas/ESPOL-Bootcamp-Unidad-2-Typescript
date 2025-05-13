@@ -53,7 +53,7 @@ Requisitos del producto:
 
 ---
 
-### 🧩 1. Crea un esquema para `Product` usando zod (1 pts)
+### 🧩 1. Crea un esquema para `Product` usando zod, no te olvides de `UdpateProduct` y `CreateProduct` types(2 pts)
 
 ---
 
