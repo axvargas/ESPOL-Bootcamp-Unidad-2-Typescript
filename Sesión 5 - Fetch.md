@@ -1,3 +1,57 @@
+¡Claro! Vamos a explicarlo paso a paso, **como si fuera para principiantes**. Esto es perfecto si estás enseñando a estudiantes nuevos o si estás empezando con la programación web.
+
+---
+
+## 🧠 ¿Qué es una API?
+
+**API** significa **Application Programming Interface**, o en español, **Interfaz de Programación de Aplicaciones**.
+
+### 🎯 En palabras simples:
+
+Una API es como un **mesero en un restaurante**:
+
+* Tú (el cliente) haces un **pedido** (request)
+* El mesero (API) lleva tu pedido a la cocina (servidor)
+* La cocina prepara la comida (los datos)
+* El mesero te trae la comida de vuelta (respuesta)
+
+---
+
+## 🌐 ¿Qué es una API web?
+
+Una **API web** es una **forma de comunicarte con un servidor usando Internet**, normalmente desde tu app, sitio web o programa.
+
+Por ejemplo, una API te permite:
+
+* Obtener una lista de usuarios
+* Crear una nueva cuenta
+* Editar un producto
+* Eliminar un comentario
+
+---
+
+## 📦 ¿Qué tipo de peticiones (requests) se pueden hacer?
+
+Las APIs REST usan **métodos HTTP**, como:
+
+| Método   | ¿Qué hace?                         | Ejemplo práctico                   |
+| -------- | ---------------------------------- | ---------------------------------- |
+| `GET`    | Leer datos                         | Ver lista de usuarios              |
+| `POST`   | Crear nuevos datos                 | Registrar un nuevo usuario         |
+| `PUT`    | Reemplazar datos existentes        | Editar todo un perfil de usuario   |
+| `PATCH`  | Editar solo una parte de los datos | Cambiar solo el nombre del usuario |
+| `DELETE` | Eliminar datos                     | Borrar un comentario               |
+
+---
+## 🧠 Resumen
+
+* Una **API** es una forma de comunicarse con otro sistema.
+* Las APIs web usan **peticiones HTTP** (`GET`, `POST`, `PUT`, `DELETE`, etc.).
+* Sirven para **leer, crear, actualizar o borrar datos** desde tu aplicación.
+* Se usan todo el tiempo en **React, TypeScript, JavaScript, móviles, etc.**
+
+---
+
 Observemos el siguiente código:
 ```ts
 const API_URL = "https://6823c58065ba05803397d6df.mockapi.io/api/v1/users"
@@ -227,4 +281,3 @@ Esto **funciona**, pero:
 > * Si fue un error: “Esto fue lo que pasó.”
 
 Es **una forma clara, segura y ordenada** de trabajar con funciones que pueden fallar.
-
