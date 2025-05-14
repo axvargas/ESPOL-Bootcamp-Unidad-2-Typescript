@@ -1,7 +1,3 @@
-¡Claro! Vamos a explicarlo paso a paso, **como si fuera para principiantes**. Esto es perfecto si estás enseñando a estudiantes nuevos o si estás empezando con la programación web.
-
----
-
 ## 🧠 ¿Qué es una API?
 
 **API** significa **Application Programming Interface**, o en español, **Interfaz de Programación de Aplicaciones**.
