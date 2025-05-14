@@ -277,3 +277,315 @@ Esto **funciona**, pero:
 > * Si fue un error: “Esto fue lo que pasó.”
 
 Es **una forma clara, segura y ordenada** de trabajar con funciones que pueden fallar.
+
+---
+
+### 🔍 Código de getUser
+
+```ts
+export async function getUser(id: string): Promise<Result<User>> {
+  try {
+    const res = await fetch(`${API_URL}/${id}`)
+    if (!res.ok) throw new Error("Usuario no encontrado")
+    const data = await res.json()
+    return { success: true, data }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+```
+
+---
+
+## 🧠 Línea por línea explicada como para niños:
+
+---
+
+### `export async function getUser(id: string): Promise<Result<User>> {`
+
+* **`export`**: Le dice a TypeScript que esta función se puede usar en otros archivos si la importamos.
+* **`async function`**: Esta función es **asincrónica**, lo que significa que puede esperar cosas que tardan (como pedir datos por internet).
+* **`getUser(id: string)`**: Es una función que se llama `getUser` y recibe un identificador (ID) como texto.
+* **`: Promise<Result<User>>`**: La función **promete** (Promise) que más tarde te va a dar un `Result<User>`, es decir:
+
+  * Si todo sale bien: `success: true, data: User`
+  * Si algo va mal: `success: false, error: string`
+
+---
+
+### `try {`
+
+* Aquí **intentamos ejecutar un bloque de código** que puede fallar.
+* Si algo falla, vamos a **atrapar el error** con `catch`.
+
+---
+
+### `const res = await fetch(\`\${API\_URL}/\${id}\`)\`
+
+* **`fetch(...)`**: Es como ir a buscar algo por internet (en este caso, un usuario).
+* **`${API_URL}/${id}`**: Está armando una dirección web con el ID del usuario.
+
+  * Si el API base es `https://ejemplo.com/api/users`, y el ID es `3`, entonces la dirección completa será `https://ejemplo.com/api/users/3`.
+* **`await`**: Le dice a JavaScript: “Espera aquí hasta que tengas una respuesta”.
+
+---
+
+### `if (!res.ok) throw new Error("Usuario no encontrado")`
+
+* **`res.ok`**: Pregunta si la respuesta fue exitosa (por ejemplo, código 200).
+* **`!res.ok`**: Significa que algo salió mal (por ejemplo, 404).
+* **`throw new Error(...)`**: Si hubo un problema, **lanzamos un error con un mensaje** personalizado: `"Usuario no encontrado"`.
+* Lanzar un error **hace que el código salte al bloque `catch` de abajo**.
+
+---
+
+### `const data = await res.json()`
+
+* **`res.json()`**: Convierte la respuesta en un objeto de JavaScript que podemos usar.
+* **`await`**: De nuevo, espera hasta que esté listo.
+* Al final, `data` será el usuario completo que vino de la API (por ejemplo: `{ id: "1", name: "Juan", age: 25 }`).
+
+---
+
+### `return { success: true, data }`
+
+* Devuelve un **objeto del tipo `Result`** que dice que todo salió bien (`success: true`) y devuelve los datos del usuario.
+
+---
+
+### `} catch (error) {`
+
+* Si en cualquier parte del `try` hubo un problema (por ejemplo, no hubo internet o el usuario no existía), **el código llega aquí**.
+
+---
+
+### `return { success: false, error: (error as Error).message }`
+
+* Aquí devolvemos un `Result` de error.
+* **`(error as Error).message`**: Estamos diciendo que el error tiene forma de `Error` para que podamos sacar su mensaje (por ejemplo, `"Usuario no encontrado"`).
+* Devolvemos `{ success: false, error: "mensaje de error" }`.
+
+---
+
+## 🎁 Resultado final
+
+Esta función nos garantiza **dos cosas importantes**:
+
+1. Siempre recibiremos un objeto que dice si todo fue bien o mal.
+2. Nunca se rompe la aplicación con errores inesperados.
+
+---
+
+## 🚀 ¿Qué podemos hacer con esta función?
+
+```ts
+const result = await getUser("3")
+
+if (result.success) {
+  console.log("El usuario es:", result.data)
+} else {
+  console.log("Ocurrió un error:", result.error)
+}
+```
+
+---
+### 🔍 Código de createUser
+
+```ts
+export async function createUser(input: CreateUser): Promise<Result<User>> {
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    })
+
+    const data = await res.json()
+    const result = userSchema.safeParse(data)
+    if (!result.success) throw new Error("Respuesta inválida del servidor")
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+```
+---
+
+### 🧠 Fragmento del código:
+
+```ts
+const res = await fetch(API_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(input),
+})
+
+const data = await res.json()
+const result = userSchema.safeParse(data)
+```
+
+---
+
+## 🔍 1. `fetch(...)`
+
+```ts
+const res = await fetch(API_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(input),
+})
+```
+
+### ¿Qué es `fetch`?
+
+* Es una función que usamos para **hacer peticiones por internet**.
+* En este caso, le estamos **enviando datos al servidor** para crear un nuevo usuario.
+
+### ¿Qué significa cada parte?
+
+* **`API_URL`**: Es la dirección a donde queremos mandar los datos (una URL como `https://mockapi.io/users`).
+* **`method: "POST"`**: Le decimos al servidor que queremos **crear algo nuevo**.
+* **`headers`**: Le decimos al servidor que **le estamos enviando JSON** (un formato de texto).
+* **`body: JSON.stringify(input)`**: Convertimos el objeto `input` (por ejemplo: `{ name: "Juan", age: 25 }`) en una **cadena de texto JSON** para enviarla correctamente.
+
+### ¿Y el `await`?
+
+* Esperamos a que el servidor responda.
+* El resultado se guarda en `res`.
+
+---
+
+## 🔍 2. `res.json()`
+
+```ts
+const data = await res.json()
+```
+
+### ¿Qué hace `res.json()`?
+
+* El servidor devuelve una respuesta como texto.
+* **`.json()` convierte ese texto en un objeto de JavaScript**.
+* Por ejemplo: `"{\"id\": \"1\", \"name\": \"Juan\"}"` → `{ id: "1", name: "Juan" }`.
+
+### ¿Por qué usamos `await`?
+
+* Porque convertir la respuesta también **toma un poco de tiempo**.
+* Le pedimos a JavaScript que **espere** a que termine.
+
+---
+
+## 🔍 3. `userSchema.safeParse(data)`
+
+```ts
+const result = userSchema.safeParse(data)
+```
+
+### ¿Qué es `safeParse`?
+
+* Es una función que **valida** si los datos recibidos del servidor **siguen las reglas** del `userSchema`.
+* Por ejemplo, si el usuario tiene:
+
+  * un `id` que sea texto,
+  * un `name` que no esté vacío,
+  * una `age` que sea un número positivo,
+  * un `email` válido,
+  * y un `status` que sea `"active"` o `"inactive"`.
+
+### ¿Por qué es importante?
+
+* Porque aunque el servidor respondió, **queremos estar seguros de que los datos son correctos** y no están mal formados.
+* `safeParse` **no lanza errores**, solo devuelve un objeto con:
+
+  * `success: true` y `data` si los datos están bien.
+  * `success: false` y `error` si los datos son incorrectos.
+
+---
+
+## ✨ Resumen
+
+| Línea            | ¿Qué hace?                                        | ¿Para qué sirve?                 |
+| ---------------- | ------------------------------------------------- | -------------------------------- |
+| `fetch(...)`     | Manda los datos al servidor                       | Para crear el nuevo usuario      |
+| `res.json()`     | Convierte la respuesta en objeto                  | Para poder leerla en JavaScript  |
+| `safeParse(...)` | Verifica que los datos tengan el formato correcto | Para evitar errores más adelante |
+
+---
+
+
+Código:
+```ts
+import { User, CreateUser, UpdateUser, userSchema, createUserSchema } from "../types/userType"
+import { Result } from "../types/resultType"
+
+const API_URL = "https://6823c58065ba05803397d6df.mockapi.io/api/v1/users"
+
+export async function getUsers(): Promise<Result<User[]>> {
+  try {
+    const res = await fetch(API_URL)
+    if (!res.ok) throw new Error("Error al obtener los usuarios")
+    const data = await res.json()
+    return { success: true, data }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function getUser(id: string): Promise<Result<User>> {
+  try {
+    const res = await fetch(`${API_URL}/${id}`)
+    if (!res.ok) throw new Error("Usuario no encontrado")
+    const data = await res.json()
+    return { success: true, data }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function createUser(input: CreateUser): Promise<Result<User>> {
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    })
+
+    const data = await res.json()
+    const result = userSchema.safeParse(data)
+    if (!result.success) throw new Error("Respuesta inválida del servidor")
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function updateUser(id: string, updates: UpdateUser): Promise<Result<User>> {
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updates)
+    })
+
+    const data = await res.json()
+    const result = userSchema.safeParse(data)
+    if (!result.success) throw new Error("Respuesta inválida del servidor")
+
+    return { success: true, data: result.data }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+export async function deleteUser(id: string): Promise<Result<null>> {
+  try {
+    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" })
+    if (!res.ok) throw new Error("No se pudo eliminar el usuario")
+    return { success: true, data: null }
+  } catch (error) {
+    return { success: false, error: (error as Error).message }
+  }
+}
+
+```
