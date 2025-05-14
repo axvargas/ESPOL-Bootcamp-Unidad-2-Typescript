@@ -1,4 +1,4 @@
-# Taller 1: Zod y Módulos
+# Taller 2: Fetch
 ---
 
 ## 🧠 Objetivo del Taller
