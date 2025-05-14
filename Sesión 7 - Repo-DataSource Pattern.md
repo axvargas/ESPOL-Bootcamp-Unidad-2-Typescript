@@ -80,3 +80,14 @@ class Cat extends Animal {
 
 * Las **clases abstractas** se usan más en proyectos donde hay una arquitectura OOP más fuerte, como backend en NestJS, o lógica compleja con herencia.
 ---
+
+Ahora podemos hacer uso de patrones de diseño que usan los conceptos aprendidos con aterioridad, para ordernear de manera profesional nuestros proyectos que involucran datos en APIs para ello vamos a hacer uso de 
+- DataSource Pattern
+- Repository Prattern
+- Factory Pattern
+
+Siguiendo la siguiente estructura:
+![Repository +  DataSource + Factory Pattern drawio (1)](https://github.com/user-attachments/assets/c717debe-1808-4408-9dd1-8ab74d631197)
+
+
+
