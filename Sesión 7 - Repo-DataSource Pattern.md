@@ -88,7 +88,7 @@ Ahora podemos hacer uso de patrones de diseño que usan los conceptos aprendidos
 
 Siguiendo la siguiente estructura:
 
-![Repository +  DataSource + Factory Pattern drawio (1)](https://github.com/user-attachments/assets/c717debe-1808-4408-9dd1-8ab74d631197)
+![Repository +  DataSource + Factory Pattern drawio (2)](https://github.com/user-attachments/assets/66c496ed-79cb-412e-b45d-078c58de0a8d)
 
 
 
