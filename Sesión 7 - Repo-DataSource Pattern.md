@@ -1,5 +1,7 @@
+# Patrones de diseño para el manejo de datos
+
 Ahora podemos hacer uso de patrones de diseño que usan los conceptos aprendidos con aterioridad, para ordernear de manera profesional nuestros proyectos que involucran datos en APIs para ello vamos a hacer uso de 
-- DataSource Pattern
+- Datasource Pattern
 - Repository Prattern
 - Factory Pattern
 
@@ -145,26 +147,45 @@ Define el **esquema de validación con Zod** y el **tipo `User`** que representa
 ```ts
 // /types/userType.ts
 import { z } from "zod"
+import { Result } from "./Result"
 
-// Creamos un esquema para validar usuarios
+// 1. Esquema base del usuario
 export const userSchema = z.object({
-  id: z.string(), // El id es un string, lo proporciona la API
-  name: z.string().min(1, "El nombre es obligatorio"), // Al menos 1 carácter
-  age: z.number().int().positive().max(100), // Número entero, positivo y máximo 100
-  email: z.string().email("Email inválido"), // Debe tener formato válido de email
-  status: z.enum(["active", "inactive"]), // Solo puede ser uno de esos dos valores
+  id: z.string().uuid(),
+  name: z.string().min(1, "El nombre es obligatorio"),
+  age: z.number().int().positive().max(100),
+  email: z.string().email("Email inválido"),
+  status: z.enum(["active", "inactive"]),
 })
 
-// Creamos un tipo User a partir del esquema
-export type User = z.infer<typeof userSchema>
-
-// Tipo para crear un usuario (sin id)
+// 2. Esquema para creación (sin id)
 export const createUserSchema = userSchema.omit({ id: true })
-export type CreateUser = z.infer<typeof createUserSchema>
 
-// Tipo para actualizar un usuario (sin id, y todos opcionales)
+// 3. Esquema para actualización (todos opcionales excepto id)
 export const updateUserSchema = createUserSchema.partial()
+
+// 4. Tipos TypeScript derivados
+export type User = z.infer<typeof userSchema>
+export type CreateUser = z.infer<typeof createUserSchema>
 export type UpdateUser = z.infer<typeof updateUserSchema>
+
+// 5. Funciones de validación
+export function validateCreateUser(input: unknown): Result<CreateUser> {
+  const result = createUserSchema.safeParse(input)
+  if (!result.success) {
+    return { success: false, error: result.error.message }
+  }
+  return { success: true, data: result.data }
+}
+
+export function validateUpdateUser(input: unknown): Result<UpdateUser> {
+  const result = updateUserSchema.safeParse(input)
+  if (!result.success) {
+    return { success: false, error: result.error.message }
+  }
+  return { success: true, data: result.data }
+}
+
 ```
 
 ### 🧠 ¿Qué conceptos nuevos aparecen?
