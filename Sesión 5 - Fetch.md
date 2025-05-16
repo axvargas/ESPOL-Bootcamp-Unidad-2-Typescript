@@ -297,7 +297,7 @@ export async function getUser(id: string): Promise<Result<User>> {
 
 ---
 
-## 🧠 Línea por línea explicada como para niños:
+## 🧠 Línea por línea explicada:
 
 ---
 
