@@ -7,7 +7,8 @@ Ahora podemos hacer uso de patrones de diseño que usan los conceptos aprendidos
 
 Siguiendo la siguiente estructura:
 
-![Repository +  DataSource + Factory Pattern drawio (2)](https://github.com/user-attachments/assets/66c496ed-79cb-412e-b45d-078c58de0a8d)
+![Repository +  DataSource + Factory Pattern drawio (3)](https://github.com/user-attachments/assets/1f8beb4d-54a8-419c-b7b2-12139b69761a)
+
 
 ## 🧱 1. Aplicación (Application Layer)
 
