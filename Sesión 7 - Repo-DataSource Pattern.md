@@ -66,9 +66,6 @@ Siguiendo la siguiente estructura:
 > ✅ Es la **fuente de datos externa**, a la cual no tienes control directo (pero puedes consumirla).
 
 ---
-Perfecto, vamos a explicar paso a paso los tres patrones de diseño: **Repository**, **DataSource** y **Factory**, usando un ejemplo real con MockAPI.io para una aplicación que maneja usuarios. Como tus alumnos son nuevos en estos conceptos, explicaré todo con palabras simples y ejemplos claros.
-
----
 
 ## 🧠 1. ¿Qué es cada patrón?
 
@@ -130,10 +127,6 @@ Para centralizar la creación de objetos, especialmente cuando hay muchas depend
 
 index.ts                    🚀 Punto de entrada para probar el código
 ```
-
----
-
-¡Perfecto! Comencemos explicando los primeros dos archivos esenciales que nos permiten trabajar con datos de manera segura y clara en nuestra aplicación.
 
 ---
 
