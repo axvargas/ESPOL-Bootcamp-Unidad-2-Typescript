@@ -1,5 +1,5 @@
 
-## 🛠️ Mini taller con `Product`
+## 🛠️ Mini Tarea con `Product`
 
 ### 🎯 Objetivo
 
