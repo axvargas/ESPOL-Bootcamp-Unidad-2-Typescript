@@ -195,8 +195,10 @@ Cuando agregamos un `eventListener`, podemos **leer ese `data-id`** con `element
 ### Ejemplo:
 
 ```ts
-document.addEventListener("click", (event) => {
-  const target = event.target as HTMLElement
+const tableElement = document.getElementById("user-table") as HTMLTableElement
+
+tableElement.addEventListener("click", async (e) => {
+    const target = event.target as HTMLElement
 
   if (target.classList.contains("edit-btn")) {
     const userId = target.dataset.id
