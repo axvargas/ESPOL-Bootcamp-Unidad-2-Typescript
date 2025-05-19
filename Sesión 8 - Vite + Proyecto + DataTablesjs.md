@@ -278,6 +278,31 @@ Aquí tienes algunos de los **event listeners más comunes**:
 
 ---
 
+Ahora podríamos agregar el eventListener para eliminar un usuario:
+```ts
+export async function setDatatableEvents(){
+  tableElement.addEventListener("click", async (e) => {
+    const target = e.target as HTMLElement
+    const id = target.dataset.id
+
+    if (!id) return
+  
+  
+    if (target.classList.contains("delete-btn")) {
+      if (confirm("¿Eliminar este usuario?")) {
+        const result = await userRepository.deleteUser(id)
+        if (result.success) {
+          alert("Usuario eliminado")
+          renderTable()
+        } else {
+          alert(result.error)
+        }
+      }
+    }
+  })
+}
+```
+
 
 #### 📄 src/main.ts
 
@@ -286,6 +311,9 @@ import { renderTable, setDatatableEvents } from "./views/userTable"
 
 // Iniciar
 renderTable()
+setDatatableEvents()
 ```
 
 ---
+
+
