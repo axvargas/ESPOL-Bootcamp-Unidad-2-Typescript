@@ -231,7 +231,8 @@ export type Address = z.infer<typeof AddressSchema>;
 📄 `src/data/addresses.ts`
 
 ```ts
-import { AddressSchema, Address } from "../types/address.schema";
+import { AddressSchema } from "../types/address.schema";
+import type { Address } from "../types/address.schema";
 
 const rawAddresses = [
   { id: "1", street: "Av. Siempre Viva 742", city: "Madrid", latitude: 40.4168, longitude: -3.7038 },
