@@ -30,10 +30,6 @@ Vite es una herramienta moderna que:
 * levanta un servidor local
 * recarga los cambios automáticamente
 
-💬 Frase clave para alumnos:
-
-> “Vite nos ahorra configurar todo a mano.”
-
 ---
 
 ## 🛠 Crear el proyecto
