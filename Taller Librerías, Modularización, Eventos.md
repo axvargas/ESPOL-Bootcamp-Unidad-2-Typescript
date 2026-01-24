@@ -6,7 +6,7 @@
 
 ---
 
-## 🎯 Objetivo del taller (explicado para alumnos)
+## 🎯 Objetivo del taller
 
 > “Vamos a crear un proyecto real de frontend, como los que se hacen en empresas, usando:
 >
