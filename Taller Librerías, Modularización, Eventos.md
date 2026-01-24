@@ -216,9 +216,6 @@ export type Address = z.infer<typeof AddressSchema>;
 * `z.string()` / `z.number()` → validaciones
 * `z.infer` → crea el tipo TS automáticamente
 
-💬 Frase clave:
-
-> “Zod define los datos, TypeScript aprende de Zod.”
 
 ---
 
@@ -308,6 +305,23 @@ export function initMap(): void {
   });
 }
 ```
+
+Dentro del html hay que tener en cuenta que hay que agregar los estilos del mapa y el div del mapa
+
+📄 `index.html`
+
+```html
+  <head>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.18.1/mapbox-gl.css" rel="stylesheet">
+  </head>
+
+
+
+  <body>
+    <div id='map' style='width: 100vw; height: 100vh;'></div>
+  </body>
+```
+
 
 ### Funciones usadas
 
