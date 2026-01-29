@@ -323,67 +323,6 @@ npm install datatables.net-dt
 
 ---
 
-# Paso 9 — Inicializar DataTables usando `data` y `columns` (con ejemplo)
-
-📄 En `src/main.ts` (agregar al inicio donde están imports)
-
-```ts
-import DataTable from "datatables.net-dt";
-```
-
-📄 Luego (después del arreglo `orders`), usar el ejemplo dado para entender la estructura:
-
-```ts
-const data = [
-  {
-    id: "asd123",
-    name: "Tiger Nixon",
-    position: "System Architect",
-    salary: "$3,120",
-    start_date: "2011/04/25",
-    office: "Edinburgh",
-    extn: "5421",
-  },
-  {
-    id: "asd124",
-    name: "Garrett Winters",
-    position: "Director",
-    salary: "$5,300",
-    start_date: "2011/07/25",
-    office: "Edinburgh",
-    extn: "8422",
-  },
-];
-
-// @ts-ignore
-let table = new DataTable("#myTable", {
-  data: data,
-  columns: [
-    { title: "Name", data: "name" },
-    { title: "Position", data: "position" },
-    { title: "Salary", data: "salary" },
-    { title: "Office", data: "office" },
-    {
-      title: "Acciones",
-      data: null,
-      render: (person) => `
-        <button class="edit-btn" data-id="${person.id}">Editar</button>
-        <button class="delete-btn" data-id="${person.id}">Eliminar</button>
-      `,
-    },
-  ],
-});
-```
-
-## Conceptos importantes
-
-* `data: data` → la tabla se alimenta desde un arreglo.
-* `columns` → define qué se muestra y de dónde sale.
-* `render` → permite dibujar botones en una columna.
-* `data-id` → se usa luego para saber qué item editar/borrar.
-
----
-
 # Paso 10 — Usar DataTables con Orders (reemplazar `data` por `orders`)
 
 ## Objetivo
@@ -416,6 +355,14 @@ let ordersTable = new DataTable("#myTable", {
   ],
 });
 ```
+## Conceptos importantes
+
+* `data: data` → la tabla se alimenta desde un arreglo.
+* `columns` → define qué se muestra y de dónde sale.
+* `render` → permite dibujar botones en una columna.
+* `data-id` → se usa luego para saber qué item editar/borrar.
+
+---
 
 **10.2** Función para refrescar DataTable cuando cambien las órdenes:
 
@@ -474,6 +421,28 @@ tableElement.addEventListener("click", (e: MouseEvent) => {
   }
 });
 ```
+
+Se usa `as` porque `document.getElementById(...)` devuelve un tipo **muy general**: `HTMLElement | null`.
+
+* **`HTMLElement`** es “cualquier elemento HTML” (puede ser un `div`, `form`, `input`, etc.).
+* Pero la propiedad **`.value`** no existe en todos los elementos, solo en elementos de formulario como **`HTMLInputElement`**, `HTMLSelectElement`, etc.
+
+Entonces, TypeScript te obliga a aclarar:
+
+> “Yo sé que este elemento específico es un `<input>`.”
+
+Eso se hace con:
+
+```ts
+document.getElementById("editingId") as HTMLInputElement
+```
+
+### ¿Para qué sirve?
+
+1. **Para que TypeScript permita usar `.value`** sin error.
+2. **Para tener autocompletado correcto** (TypeScript sabe que es un input).
+3. **Para evitar errores de tipado** cuando trabajas con el DOM.
+
 
 ---
 
