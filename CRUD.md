@@ -16,6 +16,11 @@ Sirve para validar datos “de verdad” cuando la app corre (no solo cuando esc
 Convierte el schema en un `type` de TypeScript automáticamente.
 Esto evita escribir el type dos veces.
 
+Intalar zod
+```ts
+npm install zod
+```
+
 📄 Crear archivo: `src/types/order.schema.ts`
 
 ```ts
