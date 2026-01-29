@@ -138,6 +138,11 @@ Sin `name`, `FormData.get("...")` no encuentra nada.
 `FormData` lee todos los campos del formulario que tengan `name`.
 `formData.get("campo")` devuelve `string | File | null`.
 
+Instalar uuid:
+```ts
+npm install uuid
+```
+
 📄 En `src/main.ts` (agregar esto al inicio)
 
 **3.1** Importar types y schemas:
