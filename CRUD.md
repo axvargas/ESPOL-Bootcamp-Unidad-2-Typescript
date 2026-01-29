@@ -216,7 +216,7 @@ form.addEventListener("submit", (e: SubmitEvent) => {
 📄 En `src/main.ts` (agregar debajo)
 
 ```ts
-function validateOrderForm(raw: unknown): OrderFormData | null {
+function validateOrderForm(raw: OrderRaw): OrderFormData | null {
   const result = OrderFormSchema.safeParse(raw);
 
   if (!result.success) {
@@ -696,7 +696,7 @@ function showZodErrors(messages: string[]): void {
 Actualizar `validateOrderForm` para que use el listado de errores:
 
 ```ts
-function validateOrderForm(raw: unknown): OrderFormData | null {
+function validateOrderForm(raw: OrderRaw): OrderFormData | null {
   const result = OrderFormSchema.safeParse(raw);
 
   if (!result.success) {
