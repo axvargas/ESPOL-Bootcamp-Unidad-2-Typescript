@@ -637,21 +637,3 @@ const validated: OrderFormData | null = validateOrderForm({
   longitude: raw.longitude,
 });
 ```
-
----
-
-## Resultado final de esta etapa
-
-* Crear órdenes desde el form
-* Verlas en DataTables
-* Editar: botón “Editar” llena el form y al enviar actualiza
-* Eliminar: botón “Eliminar” borra del arreglo y refresca la tabla
-
----
-
-Cuando se necesite, el siguiente paso natural es:
-
-* Validaciones extra (rango de lat/lng)
-* Confirmación antes de eliminar
-* Mostrar mensajes en pantalla (en vez de solo consola)
-* Separar en archivos (schema / store / ui)
