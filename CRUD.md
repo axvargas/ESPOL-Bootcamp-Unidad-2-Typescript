@@ -194,6 +194,18 @@ function readFormData(form: HTMLFormElement): {
 
 ---
 
+Nota: Para poder probar que está pasando es necesario agregar todo desde el evento:
+
+```ts
+form.addEventListener("submit", (e: SubmitEvent) => {
+  e.preventDefault();
+  // Leer el formulario
+  // Validar los datos del formulario
+  // Crear la order
+  // Guardar la orden
+});
+```
+
 # Paso 4 — Validar los datos del formulario con Zod (`safeParse`)
 
 ## Concepto: `safeParse`
