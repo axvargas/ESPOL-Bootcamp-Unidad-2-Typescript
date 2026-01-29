@@ -29,7 +29,7 @@ import { z } from "zod";
 export const OrderStatusSchema = z.enum(["pending", "paid", "shipped", "cancelled"]);
 
 export const OrderSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   customerName: z.string().min(2, "Customer name must have at least 2 characters"),
   status: OrderStatusSchema,
   total: z.number().positive("Total must be greater than 0"),
