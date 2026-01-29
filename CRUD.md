@@ -606,3 +606,335 @@ const validated: OrderFormData | null = validateOrderForm({
   longitude: raw.longitude,
 });
 ```
+
+# Ajustes extras:
+
+## Parte 1 — Mostrar errores de Zod debajo del formulario (lista)
+
+### Objetivo
+
+* Cuando Zod detecte errores: mostrar una lista debajo del formulario.
+* Cuando todo esté correcto: ocultar/limpiar esa lista.
+
+---
+
+### 1.1 Modificación en `index.html`
+
+Agregar un contenedor para errores **debajo** del formulario (después del botón, antes de cerrar `</form>`).
+
+```html
+<!-- Debajo del botón Create/Update -->
+<ul id="zodErrors"></ul>
+```
+
+Recomendado: agregar un poco de estilo para que se vea claro (en el `<style>` del HTML):
+
+```html
+<style>
+  #zodErrors {
+    margin-top: 12px;
+    padding-left: 18px;
+    color: #b00020;
+  }
+  #zodErrors.hidden {
+    display: none;
+  }
+</style>
+```
+
+**Qué se logró**
+
+* Existe un lugar fijo en la interfaz para mostrar errores de validación.
+* Con la clase `hidden` se puede ocultar completamente.
+
+---
+
+### 1.2 Modificación en `src/main.ts`
+
+Agregar referencias al contenedor de errores usando `document.getElementById`:
+
+```ts
+const zodErrorsEl = document.getElementById("zodErrors") as HTMLUListElement;
+```
+
+Agregar funciones para mostrar/limpiar errores:
+
+```ts
+function clearZodErrors(): void {
+  zodErrorsEl.innerHTML = "";
+  zodErrorsEl.classList.add("hidden");
+}
+
+function showZodErrors(messages: string[]): void {
+  zodErrorsEl.innerHTML = messages.map((msg: string) => `<li>${msg}</li>`).join("");
+  zodErrorsEl.classList.remove("hidden");
+}
+```
+
+Actualizar `validateOrderForm` para que use el listado de errores:
+
+```ts
+function validateOrderForm(raw: unknown): OrderFormData | null {
+  const result = OrderFormSchema.safeParse(raw);
+
+  if (!result.success) {
+    const messages: string[] = result.error.issues.map((issue) => issue.message);
+    showZodErrors(messages);
+    return null;
+  }
+
+  clearZodErrors();
+
+  const data: OrderFormData = {
+    ...result.data,
+    notes: result.data.notes === "" ? undefined : result.data.notes,
+  };
+
+  return data;
+}
+```
+
+**Qué se logró**
+
+* Los errores de Zod ya no se ven solo en consola.
+* El usuario entiende qué campos están mal.
+* Si el formulario es válido, desaparecen los errores.
+
+---
+
+## Parte 2 — Mensajes arriba del formulario por 5 segundos (Create/Update/Delete)
+
+### Objetivo
+
+* Mostrar un mensaje arriba del formulario cuando:
+
+  * se crea una orden correctamente
+  * se actualiza correctamente
+  * se elimina correctamente
+* Ese mensaje debe desaparecer solo en **5 segundos**.
+
+---
+
+### 2.1 Modificación en `index.html`
+
+Agregar un contenedor de mensajes **arriba** del formulario:
+
+```html
+<div id="toastMessage"></div>
+```
+
+Ubicarlo justo antes de `<form id="orderForm">`.
+
+Agregar estilos:
+
+```html
+<style>
+  #toastMessage {
+    margin: 12px 0;
+    padding: 10px;
+    border-radius: 6px;
+    display: none;
+  }
+  #toastMessage.success {
+    display: block;
+    background: #e8f6ea;
+    color: #0a7a0a;
+  }
+  #toastMessage.error {
+    display: block;
+    background: #fde8ec;
+    color: #b00020;
+  }
+</style>
+```
+
+**Qué se logró**
+
+* Existe una zona arriba del formulario para mensajes “tipo notificación”.
+* Se puede mostrar/ocultar sin mover el layout.
+
+---
+
+### 2.2 Modificación en `src/main.ts`
+
+Agregar referencia al elemento del mensaje:
+
+```ts
+const toastMessageEl = document.getElementById("toastMessage") as HTMLDivElement;
+```
+
+Agregar una variable para controlar el timeout:
+
+```ts
+let toastTimeoutId: number | null = null;
+```
+
+Agregar función para mostrar el mensaje por 5 segundos:
+
+```ts
+function showToast(text: string, kind: "success" | "error" = "success"): void {
+  toastMessageEl.textContent = text;
+  toastMessageEl.className = kind; // aplica clase success o error
+
+  if (toastTimeoutId !== null) {
+    window.clearTimeout(toastTimeoutId);
+  }
+
+  toastTimeoutId = window.setTimeout((): void => {
+    toastMessageEl.textContent = "";
+    toastMessageEl.className = "";
+    toastMessageEl.style.display = "none";
+    toastTimeoutId = null;
+  }, 5000);
+
+  toastMessageEl.style.display = "block";
+}
+```
+
+> Nota: aquí se usa `style.display = "block"` para mostrarlo, y se limpia al ocultarlo.
+
+**Qué se logró**
+
+* Se puede mostrar un mensaje temporal sin depender de consola.
+* Si se disparan mensajes seguidos, el anterior se reemplaza correctamente.
+
+---
+
+## Parte 3 — Confirmación al eliminar (alert sencillo)
+
+### Objetivo
+
+Antes de eliminar, pedir confirmación al usuario.
+
+---
+
+### 3.1 Modificación en el evento de click del botón Delete
+
+En el listener donde se detecta `delete-btn`, agregar confirmación:
+
+```ts
+if (target.classList.contains("delete-btn")) {
+  const id: string = String(target.getAttribute("data-id") ?? "");
+  if (!id) return;
+
+  const confirmed: boolean = window.confirm("¿Estás seguro de eliminar esta orden?");
+  if (!confirmed) return;
+
+  deleteOrderById(id);
+  refreshOrdersTable();
+
+  showToast("Orden eliminada correctamente", "success");
+}
+```
+
+**Qué se logró**
+
+* Evita eliminaciones accidentales.
+* El usuario confirma antes de borrar.
+
+---
+
+## Parte 4 — Mensajes de Create y Update usando el “toast” + limpiar errores
+
+### Objetivo
+
+* Cuando Create funciona: mostrar “Orden guardada correctamente”.
+* Cuando Update funciona: mostrar “Orden actualizada correctamente”.
+* Al éxito: limpiar errores de Zod y limpiar modo edición.
+
+---
+
+### 4.1 Modificación en el submit (Create vs Update)
+
+Ubicación: dentro del `form.addEventListener("submit", ...)`
+
+Después de `validateOrderForm(...)` y cuando todo es válido, asegurar:
+
+* Si crea → `showToast("Orden guardada correctamente", "success")`
+* Si actualiza → `showToast("Orden actualizada correctamente", "success")`
+* Siempre que sea válido → `clearZodErrors()`
+
+Ejemplo de ajustes en el flujo:
+
+**En Update:**
+
+```ts
+if (raw.editingId) {
+  updateOrderById(raw.editingId, validated);
+
+  (document.getElementById("editingId") as HTMLInputElement).value = "";
+
+  refreshOrdersTable();
+  form.reset();
+
+  clearZodErrors();
+  showToast("Orden actualizada correctamente", "success");
+  return;
+}
+```
+
+**En Create:**
+
+```ts
+const order: Order = createOrderEntity(validated);
+saveOrder(order);
+
+refreshOrdersTable();
+form.reset();
+
+clearZodErrors();
+showToast("Orden guardada correctamente", "success");
+```
+
+**Qué se logró**
+
+* El usuario recibe feedback claro cuando todo fue correcto.
+* Se refuerza la importancia de validación: si hay errores, aparecen; si no, desaparecen.
+
+---
+
+## Parte 5 — Comportamiento recomendado para principiantes (detalle importante)
+
+### 5.1 Evitar errores “silenciosos” por elementos no encontrados
+
+Asegurar que estos elementos existan en el HTML:
+
+* `zodErrors`
+* `toastMessage`
+
+Si falta alguno, TypeScript no siempre detecta el error, pero en ejecución puede fallar.
+
+---
+
+## Resumen de cambios por archivo
+
+### `index.html`
+
+1. Agregar `<div id="toastMessage"></div>` arriba del form
+2. Agregar `<ul id="zodErrors"></ul>` abajo del form
+3. Agregar estilos para `.hidden`, `.success`, `.error`
+
+### `src/main.ts`
+
+1. Capturar referencias con `document.getElementById`:
+
+   * `toastMessageEl`
+   * `zodErrorsEl`
+2. Crear helpers:
+
+   * `showToast(...)`
+   * `showZodErrors(...)`
+   * `clearZodErrors()`
+3. En validación Zod:
+
+   * mostrar lista de errores y ocultarla cuando sea válido
+4. En Delete:
+
+   * `confirm(...)` antes de eliminar
+   * `showToast(...)` luego de eliminar
+5. En Create y Update:
+
+   * `showToast(...)` de éxito por 5 segundos
+   * limpiar errores
+
+---
