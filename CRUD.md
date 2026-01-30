@@ -187,6 +187,46 @@ function readFormData(form: HTMLFormElement): {
 }
 ```
 
+```ts
+{
+  customerName: string;
+  status: string;
+  total: string;
+  notes: string;
+  latitude: string;
+  longitude: string;
+}
+```
+
+Puede ser cambiado por su propio tipo agregando el siguiente codigo al final del archivo `types/order.schema.ts` 
+
+```ts
+export type OrderRaw = {
+  customerName: string;
+  status: string;
+  total: string;
+  notes: string;
+  latitude: string;
+  longitude: string;
+}
+
+Y luego utilizarlo en el main (Obviamente importandolo):
+
+```ts
+function readFormData(form: HTMLFormElement): OrderRaw {
+  const formData = new FormData(form);
+
+  return {
+    customerName: String(formData.get("customerName") ?? ""),
+    status: String(formData.get("status") ?? ""),
+    total: String(formData.get("total") ?? ""),
+    notes: String(formData.get("notes") ?? ""),
+    latitude: String(formData.get("latitude") ?? ""),
+    longitude: String(formData.get("longitude") ?? ""),
+  };
+}
+```
+
 **Qué se logró aquí**
 
 * Se puede “leer” el formulario sin usar `.value` input por input.
