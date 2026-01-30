@@ -209,6 +209,7 @@ export type OrderRaw = {
   latitude: string;
   longitude: string;
 }
+```
 
 Y luego utilizarlo en el main (Obviamente importandolo):
 
