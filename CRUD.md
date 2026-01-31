@@ -485,21 +485,6 @@ tableElement.addEventListener("click", (e: MouseEvent) => {
 });
 ```
 
-Se usa `as` porque `document.getElementById(...)` devuelve un tipo **muy general**: `HTMLElement | null`.
-
-* **`HTMLElement`** es “cualquier elemento HTML” (puede ser un `div`, `form`, `input`, etc.).
-* Pero la propiedad **`.value`** no existe en todos los elementos, solo en elementos de formulario como **`HTMLInputElement`**, `HTMLSelectElement`, etc.
-
-Entonces, TypeScript te obliga a aclarar:
-
-> “Yo sé que este elemento específico es un `<input>`.”
-
-Eso se hace con:
-
-```ts
-document.getElementById("editingId") as HTMLInputElement
-```
-
 ### ¿Para qué sirve?
 
 1. **Para que TypeScript permita usar `.value`** sin error.
@@ -542,6 +527,22 @@ function loadOrderToForm(order: Order): void {
   (document.getElementById("longitude") as HTMLInputElement).value = String(order.longitude);
 }
 ```
+
+Se usa `as` porque `document.getElementById(...)` devuelve un tipo **muy general**: `HTMLElement | null`.
+
+* **`HTMLElement`** es “cualquier elemento HTML” (puede ser un `div`, `form`, `input`, etc.).
+* Pero la propiedad **`.value`** no existe en todos los elementos, solo en elementos de formulario como **`HTMLInputElement`**, `HTMLSelectElement`, etc.
+
+Entonces, TypeScript te obliga a aclarar:
+
+> “Yo sé que este elemento específico es un `<input>`.”
+
+Eso se hace con:
+
+```ts
+document.getElementById("editingId") as HTMLInputElement
+```
+
 
 ---
 
