@@ -955,4 +955,406 @@ showToast("Orden guardada correctamente", "success");
 * El usuario recibe feedback claro cuando todo fue correcto.
 * Se refuerza la importancia de validación: si hay errores, aparecen; si no, desaparecen.
 
+---
+
+# Introducción breve: ¿qué es `fetch` y para qué se usa?
+
+`fetch` es una función del navegador que permite hacer **peticiones HTTP** a un servidor o a una API.
+En otras palabras, sirve para “hablar” con un backend para:
+
+* **GET**: leer datos (traer órdenes)
+* **POST**: crear datos (crear una orden)
+* **PUT/PATCH**: actualizar datos (editar una orden)
+* **DELETE**: borrar datos (eliminar una orden)
+
+En un CRUD real, las órdenes no viven en un arreglo en memoria, sino en una base de datos. Para simular eso sin tener que construir un backend propio, se puede usar **MockAPI.io**, que ofrece endpoints listos para practicar.
+
+### ¿Cómo se usa `fetch`?
+
+`fetch(url, options)` devuelve una **Promise** (una promesa de que “algo llegará después”).
+Por eso normalmente se usa con `async/await`:
+
+* `await fetch(...)` espera la respuesta del servidor
+* `response.json()` convierte la respuesta a un objeto/array de JavaScript
+
+Ejemplo mental simple:
+
+1. “Pido datos” (fetch)
+2. “Espero la respuesta”
+3. “Convierto a JSON”
+4. “Uso los datos en mi app”
+
+---
+
+# Paso a paso: agregar MockAPI + `fetch` al proyecto
+
+## Meta de esta etapa
+
+Reemplazar el arreglo en memoria como “fuente de verdad” por una API real (MockAPI).
+El flujo será:
+
+1. Al cargar la app: **traer órdenes desde la API** (GET)
+2. Al crear: **guardar en la API** (POST) y refrescar la tabla/arreglo
+3. Al actualizar: **actualizar en la API** (PUT) y refrescar
+4. Al eliminar: **eliminar en la API** (DELETE) y refrescar
+
+> Las validaciones con Zod se mantienen igual: se valida antes de enviar al backend y también se valida la respuesta.
+
+---
+
+## Paso 1 — Crear el recurso en MockAPI.io
+
+1. Entrar a MockAPI.io y crear un proyecto.
+
+2. Crear un recurso llamado: `orders`
+
+3. Agregar campos (MockAPI crea `id` automáticamente como string):
+
+   * `customerName` (string)
+   * `status` (string)
+   * `total` (number)
+   * `notes` (string)
+   * `latitude` (number)
+   * `longitude` (number)
+   * `createdAt` (string)
+
+4. Copiar la base URL, por ejemplo:
+
+* `https://xxxxx.mockapi.io`
+
+El endpoint final quedará así:
+
+* `https://xxxxx.mockapi.io/orders`
+
+> Importante: MockAPI genera su propio `id`. En esta etapa se puede mantener `uuid` para entender IDs, pero lo más real es que el backend genere el ID. Se decide más abajo.
+
+---
+
+## Paso 2 — Guardar la URL de la API en una constante
+
+### Cambio a hacer en `src/main.ts`
+
+Agregar al inicio:
+
+```ts
+const API_BASE_URL: string = "https://xxxxx.mockapi.io";
+const ORDERS_ENDPOINT: string = `${API_BASE_URL}/orders`;
+```
+
+**Para qué se hace**
+
+* Evita repetir strings largos en el código.
+* Si mañana cambia la URL, se cambia en un solo lugar.
+
+---
+
+## Paso 3 — Ajuste del schema de Zod para aceptar IDs del backend
+
+### Idea clave
+
+MockAPI genera `id` como string. Eso encaja con el schema actual (`id: z.string()`), así que no hay problema.
+
+Pero hay un detalle: si se sigue usando `uuid` para generar IDs, al hacer POST con MockAPI, MockAPI puede ignorarlo o reemplazarlo (depende de la configuración). La forma más simple para enseñar es:
+
+* En **Create**: no enviar `id`, que lo genere MockAPI
+* En **Update/Delete**: usar el `id` que regresa MockAPI
+
+### Cambio a hacer en `src/types/order.schema.ts`
+
+Separar `OrderCreateSchema` (sin id) para enviar al backend.
+
+Agregar debajo de `OrderFormSchema`:
+
+```ts
+export const OrderCreateSchema = z.object({
+  customerName: z.string().min(2),
+  status: OrderStatusSchema,
+  total: z.number().positive(),
+  notes: z.string().optional(),
+  latitude: z.number(),
+  longitude: z.number(),
+  createdAt: z.string(),
+});
+
+export type OrderCreate = z.infer<typeof OrderCreateSchema>;
+```
+
+**Para qué se hace**
+
+* `Order` es lo que existe “guardado” (ya tiene id).
+* `OrderCreate` es lo que se envía para crear (sin id).
+
+> Zod sirve para que el “contrato” sea claro: qué se envía y qué se recibe.
+
+---
+
+## Paso 4 — Crear funciones HTTP (GET, POST, PUT, DELETE) en un archivo separado
+
+### Por qué separar
+
+Si se mezcla lógica de fetch con lógica de UI en el mismo archivo, se vuelve difícil de leer. Separar ayuda a que cada parte tenga un propósito.
+
+### Crear archivo: `src/api/orders.api.ts`
+
+```ts
+import { OrderSchema, type Order, OrderCreateSchema, type OrderCreate } from "../types/order.schema";
+
+const API_BASE_URL: string = "https://xxxxx.mockapi.io";
+const ORDERS_ENDPOINT: string = `${API_BASE_URL}/orders`;
+
+/**
+ * GET /orders
+ * Trae todas las órdenes.
+ */
+export async function apiGetOrders(): Promise<Order[]> {
+  const response: Response = await fetch(ORDERS_ENDPOINT);
+
+  if (!response.ok) {
+    throw new Error(`GET orders failed: ${response.status}`);
+  }
+
+  const data: unknown = await response.json();
+
+  // Validar que sea un array de Order
+  if (!Array.isArray(data)) {
+    throw new Error("Invalid orders response: expected array");
+  }
+
+  const parsed: Order[] = data.map((item: unknown) => OrderSchema.parse(item));
+  return parsed;
+}
+
+/**
+ * POST /orders
+ * Crea una orden.
+ */
+export async function apiCreateOrder(payload: OrderCreate): Promise<Order> {
+  // Validación extra antes de enviar
+  const safePayload: OrderCreate = OrderCreateSchema.parse(payload);
+
+  const response: Response = await fetch(ORDERS_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(safePayload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`POST order failed: ${response.status}`);
+  }
+
+  const data: unknown = await response.json();
+  const created: Order = OrderSchema.parse(data);
+  return created;
+}
+
+/**
+ * PUT /orders/:id
+ * Actualiza una orden.
+ */
+export async function apiUpdateOrder(id: string, payload: OrderCreate): Promise<Order> {
+  const safePayload: OrderCreate = OrderCreateSchema.parse(payload);
+
+  const response: Response = await fetch(`${ORDERS_ENDPOINT}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(safePayload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`PUT order failed: ${response.status}`);
+  }
+
+  const data: unknown = await response.json();
+  const updated: Order = OrderSchema.parse(data);
+  return updated;
+}
+
+/**
+ * DELETE /orders/:id
+ * Elimina una orden.
+ */
+export async function apiDeleteOrder(id: string): Promise<void> {
+  const response: Response = await fetch(`${ORDERS_ENDPOINT}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(`DELETE order failed: ${response.status}`);
+  }
+}
+```
+
+**Qué se está usando y para qué**
+
+* `async/await`: escribir código asíncrono como si fuera lineal
+* `response.ok`: indica si la petición fue exitosa (status 200-299)
+* `headers` y `Content-Type`: decir que se envía JSON
+* `JSON.stringify`: convertir objeto JS a texto JSON para enviarlo
+* `response.json()`: convertir respuesta JSON a objeto JS
+* `Zod.parse`: validar que lo recibido del backend tiene la forma correcta
+
+---
+
+## Paso 5 — Reemplazar el arreglo local por datos de la API al iniciar
+
+### Cambio a hacer en `src/main.ts`
+
+1. Importar funciones de API
+2. Al iniciar, cargar órdenes con GET y llenar el arreglo
+
+Agregar imports:
+
+```ts
+import { apiGetOrders, apiCreateOrder, apiUpdateOrder, apiDeleteOrder } from "./api/orders.api";
+import { type Order, type OrderFormData, OrderFormSchema, type OrderCreate } from "./types/order.schema";
+```
+
+Asegurar que `orders` siga existiendo como estado local para DataTables y el UI:
+
+```ts
+const orders: Order[] = [];
+```
+
+Crear una función para “sincronizar” desde backend:
+
+```ts
+async function loadOrdersFromApi(): Promise<void> {
+  const remoteOrders: Order[] = await apiGetOrders();
+
+  orders.length = 0;
+  orders.push(...remoteOrders);
+
+  refreshOrdersTable();
+}
+```
+
+**Para qué se hace**
+
+* `orders` sigue siendo el estado en el frontend.
+* La fuente real ahora es la API.
+* `loadOrdersFromApi()` se llama al iniciar.
+
+Finalmente, llamar al inicio:
+
+```ts
+loadOrdersFromApi().catch((err: unknown) => {
+  console.log("Error loading orders:", err);
+});
+```
+
+---
+
+## Paso 6 — Create: enviar POST en vez de guardar en arreglo
+
+### Idea
+
+1. Validar form con Zod
+2. Construir payload (sin id)
+3. `await apiCreateOrder(payload)`
+4. Agregar el resultado al arreglo y refrescar tabla
+
+Crear una función para convertir `OrderFormData` en `OrderCreate`:
+
+```ts
+function buildCreatePayload(data: OrderFormData): OrderCreate {
+  return {
+    customerName: data.customerName,
+    status: data.status,
+    total: data.total,
+    notes: data.notes,
+    latitude: data.latitude,
+    longitude: data.longitude,
+    createdAt: new Date().toISOString(),
+  };
+}
+```
+
+En el submit (en la parte de Create), reemplazar la lógica:
+
+```ts
+const payload: OrderCreate = buildCreatePayload(validated);
+
+apiCreateOrder(payload)
+  .then((created: Order) => {
+    orders.unshift(created);
+    refreshOrdersTable();
+    clearZodErrors();
+    showToast("Orden guardada correctamente", "success");
+    form.reset();
+  })
+  .catch((err: unknown) => {
+    console.log("Create error:", err);
+    showToast("Error al guardar la orden", "error");
+  });
+```
+
+> También se puede hacer con `await` dentro de una función `async`, pero este formato es fácil de seguir al inicio.
+
+---
+
+## Paso 7 — Update: enviar PUT en vez de actualizar el arreglo
+
+En la parte donde se hace update, reemplazar:
+
+```ts
+const payload: OrderCreate = buildCreatePayload(validated);
+
+apiUpdateOrder(raw.editingId, payload)
+  .then((updated: Order) => {
+    const index: number = orders.findIndex((o: Order) => o.id === updated.id);
+    if (index !== -1) orders[index] = updated;
+
+    refreshOrdersTable();
+    clearZodErrors();
+    showToast("Orden actualizada correctamente", "success");
+    (document.getElementById("editingId") as HTMLInputElement).value = "";
+    form.reset();
+  })
+  .catch((err: unknown) => {
+    console.log("Update error:", err);
+    showToast("Error al actualizar la orden", "error");
+  });
+```
+
+---
+
+## Paso 8 — Delete: confirmar y luego hacer DELETE en la API
+
+En el click del botón delete:
+
+```ts
+if (target.classList.contains("delete-btn")) {
+  const id: string = String(target.getAttribute("data-id") ?? "");
+  if (!id) return;
+
+  const confirmed: boolean = window.confirm("¿Estás seguro de eliminar esta orden?");
+  if (!confirmed) return;
+
+  apiDeleteOrder(id)
+    .then(() => {
+      const index: number = orders.findIndex((o: Order) => o.id === id);
+      if (index !== -1) orders.splice(index, 1);
+
+      refreshOrdersTable();
+      showToast("Orden eliminada correctamente", "success");
+    })
+    .catch((err: unknown) => {
+      console.log("Delete error:", err);
+      showToast("Error al eliminar la orden", "error");
+    });
+}
+```
+
+---
+
+# Cierre: qué se gana al usar fetch + MockAPI
+
+* El CRUD ya no depende de un arreglo temporal que se pierde al recargar.
+* Se practica el flujo real de una app:
+
+  * Validar (Zod)
+  * Enviar (fetch)
+  * Recibir respuesta
+  * Actualizar UI/estado
+
 
