@@ -161,6 +161,6 @@ index.html
 
 ---
 
-
+NOTA: El proyecto deben presentarlo el día Sábado a modo de Demo. Y voy a realizar una pregunta acerca del código en donde voy a pedir que me expliquen algún método o funcionalidad de alguna función de una librería que estén usando, por lo que tienen que tener bien claro para que sirve el código que están escribiendo.
 
 
