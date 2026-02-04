@@ -57,8 +57,6 @@ Cada antena tiene, como mínimo, las siguientes propiedades:
 * `longitude` number
 * `installedAt` string
 
-Las coordenadas **deben estar dentro de la ciudad de Guayaquil**.
-
 ---
 
 ## 🛠️ Requerimientos funcionales
@@ -113,6 +111,17 @@ En la columna **Actions**, incluir botones que permitan:
 
 * Usar TypeScript correctamente tipado.
 * Separar responsabilidades (API, lógica, UI, mapa).
+```
+src/
+ ├─ api/
+ │   └─ antennas.api.ts
+ ├─ types/
+ │   └─ antenna.type.ts
+ ├─ map/
+ │   └─ map.ts
+ ├─ main.ts
+index.html
+```
 * Evitar variables `any`.
 
 ---
@@ -151,4 +160,7 @@ En la columna **Actions**, incluir botones que permitan:
 | **Total**                      |                                                                              | **100 pts** |
 
 ---
+
+
+
 
