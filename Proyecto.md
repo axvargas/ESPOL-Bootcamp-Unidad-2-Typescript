@@ -49,8 +49,8 @@ Cada antena tiene, como mínimo, las siguientes propiedades:
 * `code` string
 * `operator` string
 * `type` string
-* `status` string
-* `powerKw` string (maintenance | out_of_service | active)
+* `status` string (maintenance | out_of_service | active)
+* `powerKw` number
 * `heightMts` number
 * `neighborhood` string
 * `latitude` number
