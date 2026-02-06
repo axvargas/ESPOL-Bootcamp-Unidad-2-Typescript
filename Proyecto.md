@@ -34,9 +34,7 @@ Desarrollar una aplicación web que:
 
 Los datos deben obtenerse mediante `fetch` desde la siguiente URL base:
 
-```
 [https://6823c58065ba05803397d6df.mockapi.io/api/v1/:endpoint](https://6823c58065ba05803397d6df.mockapi.io/api/v1/antennas)
-```
 
 ---
 
@@ -94,9 +92,9 @@ En la columna **Actions**, incluir botones que permitan:
 
 ### 4️⃣ Mapa interactivo (Mapbox)
 
-* Inicializar un mapa centrado en Guayaquil.
+* Inicializar un mapa centrado en Guayaquil. API KEY: `pk.eyJ1IjoiYW5kcmVzeGF2aWVyOTkiLCJhIjoiY20zbWUyMWdqMTFzZDJrcHhidjlhZjFwaCJ9.JxyJSYQBmQI77epaw4xUaQ`
 * Colocar marcadores (`Marker`) usando latitude y longitude.
-* Al hacer **click en un marcador**, mostrar un **Popup** con información relevante:
+* Al hacer **pasar el mouse por encima del marcador**, mostrar un **Popup** con información relevante:
 
   * Name
   * Operator
