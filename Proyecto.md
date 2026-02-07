@@ -34,7 +34,7 @@ Desarrollar una aplicación web que:
 
 Los datos deben obtenerse mediante `fetch` desde la siguiente URL base:
 
-[https://6823c58065ba05803397d6df.mockapi.io/api/v1/:endpoint](https://6823c58065ba05803397d6df.mockapi.io/api/v1/antennas)
+[https://6823c58065ba05803397d6df.mockapi.io/api/v1/antennas](https://6823c58065ba05803397d6df.mockapi.io/api/v1/antennas)
 
 ---
 
