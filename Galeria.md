@@ -1,4 +1,4 @@
-## Mini taller (1 hora): Gallery de imágenes con TypeScript + API (GET)
+## Mini taller: Gallery de imágenes con TypeScript + API (GET)
 
 ### Objetivo
 
