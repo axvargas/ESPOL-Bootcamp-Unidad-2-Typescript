@@ -197,3 +197,25 @@ loadBtn.addEventListener("click", async (): Promise<void> => {
   }
 });
 ```
+
+
+Opcional: Sintaxis.then.ctach
+```
+loadBtn.addEventListener("click", (): void => {
+  loadBtn.disabled = true;
+  loadBtn.textContent = "Loading...";
+
+  fetchImages(1, 12)
+    .then((images: PicsumImage[]) => {
+      renderGallery(gallery, images);
+    })
+    .catch((error: unknown) => {
+      gallery.innerHTML = `<p style="color:#b00020;">Error loading images</p>`;
+      console.log("Fetch error:", error);
+    })
+    .finally(() => {
+      loadBtn.disabled = false;
+      loadBtn.textContent = "Load Images";
+    });
+});
+```
