@@ -200,7 +200,7 @@ loadBtn.addEventListener("click", async (): Promise<void> => {
 
 
 Opcional: Sintaxis.then.ctach
-```
+```ts
 loadBtn.addEventListener("click", (): void => {
   loadBtn.disabled = true;
   loadBtn.textContent = "Loading...";
